@@ -10,18 +10,22 @@ class FilterForm(forms.Form):
 								attrs={
 									'class':'form-control typeahead',
 									'required':'true'
-									}))
-	parameter = forms.ChoiceField(choices=PARAMETER_CHOICES,required=True)
+							}))
+
+	parameter = forms.ChoiceField(
+								choices=PARAMETER_CHOICES,
+								widget=forms.Select(
+									attrs={
+										'class':'form-control'
+								}))
 
 	date_start=forms.CharField(
-				
-							widget=forms.TextInput(attrs={
-								'class':'date start form-control',
-								'required':'true'
+							widget=forms.TextInput(
+								attrs={
+									'class':'date start form-control',
+									'required':'true'
 								}))
 	date_stop=forms.CharField(
-							
 							widget=forms.TextInput(attrs={
-								'class':'date end form-control',
-								
+								'class':'date end form-control',	
 								}))

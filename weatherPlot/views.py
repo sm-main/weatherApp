@@ -1,19 +1,22 @@
 import requests
 import datetime
 from datetime import datetime,timedelta,date
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect,Http404,JsonResponse
 from django.shortcuts import render
 from .forms import FilterForm
 
-
+@login_required
 def landing_page_view(request):
 	"""
 
 	"""
-	if request.method == 'GET':
+	if request.method == 'GET':	
 		form = FilterForm()
+		#print(request.user.)
 		context = {
-			'form':form
+			'form':form,
+			'username':request.user.username
 		}
 		return render(request,'weatherApp/landing_page.html',context)
 		
@@ -61,8 +64,10 @@ def get_points_view(request):
 				print(humidity_list)
 				if temperature_list:
 					response_data['temperature_list'] = temperature_list
+					response_data['parameter'] = 'temperature'
 				elif humidity_list:
 					response_data['humidity_list'] = humidity_list	
+					response_data['parameter'] = 'humidity'
 				response_data['error'] = False	
 				#print(date_list_obj,'list_obje')
 				response_data['date_list'] = date_list_obj			

@@ -5,6 +5,14 @@
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.1/css/bootstrap-datepicker.min.css">
 
 	<style>
+		#top-header
+		{
+			margin-bottom: 20px;
+		}
+		label[for='id_station_name']
+		{
+			display: block;
+		}
 		.form-control
 		{
 			width: 15%!important;
@@ -12,19 +20,26 @@
 		}
 		#id_station_name
 		{
-			width: 100%!important;
+			width: 90%!important;
 		}
 	</style>
 {% endblock stylesheets %}
 
-
 {% block body %}
+	<section id="top-header">
+		<div class="container">
+			<h3>Hello {{username}} you can plot graphs here</h3>
+		</div>	
+	</section>
 	<section id="form-section">
-		<form id="filter-form" method="post" action="{% url 'get_points_view' %}">
-			{% csrf_token %}
-			{{form.as_p}}
-			<input id="submit" type="submit" value="submit">
-		</form>
+		<div class="container">
+			<form id="filter-form" method="post" action="{% url 'get_points_view' %}">
+				{% csrf_token %}
+
+				{{form.as_p}}
+				<input class="button2 btn btn-default" type="submit" value="submit">
+			</form>
+		</div>	
 	</section>	
 
 	<section id="chart-section">
@@ -104,7 +119,42 @@
 	        	}
 	    	}
 		});
-
+		/*..................Plot Function.............................*/
+		function plotChart(parameterList,dateList,titleText,yAxisTitle,vSuffix){
+			$('#chart-div').highcharts({
+		        title: {
+		            text: titleText,
+		            x: -20 //center
+		        },
+		        
+		        xAxis: {
+		            categories: dateList
+		        },
+		        yAxis: {
+		            title: {
+		                text: yAxisTitle
+		            },
+		            plotLines: [{
+		                value: 0,
+		                width: 1,
+		                color: '#808080'
+		            }]
+		        },
+		        tooltip: {
+		            valueSuffix:vSuffix 
+		        },
+		        legend: {
+		            layout: 'vertical',
+		            align: 'right',
+		            verticalAlign: 'middle',
+		            borderWidth: 0
+		        },
+		        series: [{
+		            name: 'sunny',
+		            data: parameterList
+		        }]
+		    });
+		}
 		/*.................Filter Form.................................*/
 		$('#filter-form').on('submit',function(e){
 			e.preventDefault();
@@ -119,43 +169,21 @@
 					if (response.error === false){
 						console.log(response.temperature_list);
 						console.log(response.humidity_list);
-						var list = [];
-						$.each(response.temperature_list,function(index,elem){
-							list.push(parseInt(elem));
-						});
-							 $('#chart-div').highcharts({
-						        title: {
-						            text: 'Temperature',
-						            x: -20 //center
-						        },
-						        
-						        xAxis: {
-						            categories: response.date_list
-						        },
-						        yAxis: {
-						            title: {
-						                text: 'Temperature (°C)'
-						            },
-						            plotLines: [{
-						                value: 0,
-						                width: 1,
-						                color: '#808080'
-						            }]
-						        },
-						        tooltip: {
-						            valueSuffix: '°C'
-						        },
-						        legend: {
-						            layout: 'vertical',
-						            align: 'right',
-						            verticalAlign: 'middle',
-						            borderWidth: 0
-						        },
-						        series: [{
-						            name: 'sunny',
-						            data: list
-						        }]
-						    });
+						if (response.parameter === 'temperature'){
+							var list = [];
+							$.each(response.temperature_list,function(index,elem){
+								list.push(parseInt(elem));
+							});
+							plotChart(list,response.date_list,'Temperature','Temperature (°C)','°C');
+							
+						}
+						else{
+							var list = [];
+							$.each(response.humidity_list,function(index,elem){
+								list.push(parseInt(elem));
+							});
+							plotChart(list,response.date_list,'Humidity','Humidity (%)','%');
+						}    
 					}
 					else{
 						$('#chart-div').html('<h3 style="color:red;">Please try again.</h3>');

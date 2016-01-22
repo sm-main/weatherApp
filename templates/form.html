@@ -18,6 +18,12 @@
 		color: red;
 		font-size: 10px;
 	}
+	.register-adv
+	{
+		margin-top: 20px;
+		font-size: 12px;
+		font-style: italic;
+	}
 
 	</style>
 {% endblock stylesheets %}
@@ -31,6 +37,12 @@
 
 
 <input type='submit' value='{% if submit_btn %}{{ submit_btn }}{% else %}Submit{% endif %}' class='button2 btn btn-default' />
+{% if login == True %}
+	<p class="register-adv">Don't have an account? Register <a style="color:#eb6a2b;" href="{% url 'auth_register' %}">here</a></p>
+{% else %}
+	<p class="register-adv">Already have an account? Login <a style="color:#eb6a2b;" href="{% url 'auth_login' %}">here</a></p>	
+{% endif %}
+
 </form>
 </div>
 

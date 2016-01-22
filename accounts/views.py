@@ -6,25 +6,30 @@ from .forms import LoginForm,RegistrationForm
 
 
 def logout_view(request):
-	print ('logging out')
+	#print ('logging out')
 	logout(request)
 	return HttpResponseRedirect('%s'%(reverse("auth_login")))
 
+
+
 def login_view(request):
-	if request.method == 'GET':
+	if request.user.is_authenticated():
+		return HttpResponseRedirect('/')
+
+	elif request.method == 'GET':
 		form = LoginForm()
 		context = {
-			'form':form
+			'form':form,
+			'login':True
 		}
 		return render(request, "form.html", context)
-	else:		
+	elif request.method == 'POST':		
 		form = LoginForm(request.POST or None)
 		if form.is_valid():
 			username = form.cleaned_data['username']
 			password = form.cleaned_data['password']
 			user = authenticate(username=username, password=password)
 			login(request, user)
-			#messages.success(request, "Successfully Logged In. Welcome Back!")
 			return HttpResponseRedirect("/")
 		else:
 			context = {
@@ -35,6 +40,8 @@ def login_view(request):
 
 
 def registration_view(request):
+	if request.user.is_authenticated():
+		return HttpResponseRedirect('/')
 	form = RegistrationForm(request.POST or None)
 	btn = "Register"
 	if form.is_valid():
@@ -45,5 +52,6 @@ def registration_view(request):
 	context = {
 		 "form": form,
 		 "submit_btn": btn,
+		 'login':False
 	}
 	return render(request, "form.html", context)
