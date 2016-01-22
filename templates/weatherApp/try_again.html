@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block body %}
+	<section>
+		<h3>
+			Some error occured 
+		</h3>
+		<a style="color:red;" href="{% url 'landing_page_view' %}">Search again</a>
+	</section>
+{% endblock body %}
