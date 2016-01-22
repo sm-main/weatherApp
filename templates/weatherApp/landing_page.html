@@ -3,6 +3,7 @@
 {% block stylesheets %}
 	{{block.super}}
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.1/css/bootstrap-datepicker.min.css">
+
 	<style>
 		.form-control
 		{
@@ -27,17 +28,19 @@
 	</section>	
 
 	<section id="chart-section">
-			
+		<div id="chart-div" style="min-width: 310px; height: 400px; margin: 0 auto"></div>	
 	</section>
 
 {% endblock body %}
 
 {% block scripts %}
 	{{block.super}}
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.jquery.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.1/js/bootstrap-datepicker.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/datepair.js/0.4.14/jquery.datepair.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/jquery.canvasjs.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.1/js/bootstrap-datepicker.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/datepair.js/0.4.14/jquery.datepair.min.js"></script>
+	<script src="http://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/modules/data.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
 	<script>
 		/*.....................Station Typeahead.............*/
 		var substringMatcher = function(strs) {
@@ -115,33 +118,47 @@
 				success:function(response){
 					if (response.error === false){
 						console.log(response.temperature_list);
-						//console.log(response.humidity_list);
-						console.log(response.date_list);
-						var xxx=response.temperature_list;
+						console.log(response.humidity_list);
 						var list = [];
-						//var dictionary = {};
-						$.each(xxx,function(index,value){
-							var dictionary = {};
-							dictionary['x'] = response.data_list;
-							dictionary['y'] = response.temperature_list;
-							list.push(dictionary);
-						});		
-						console.log(list);
-						var options = {
-							title:{
-
-								text:"Temperature"
-						},
-
-						data:[{
-							type:'spline',
-							dataPoints:list
-						}]	
-					};
-						$("#chart-section").CanvasJSChart(options);
+						$.each(response.temperature_list,function(index,elem){
+							list.push(parseInt(elem));
+						});
+							 $('#chart-div').highcharts({
+						        title: {
+						            text: 'Temperature',
+						            x: -20 //center
+						        },
+						        
+						        xAxis: {
+						            categories: response.date_list
+						        },
+						        yAxis: {
+						            title: {
+						                text: 'Temperature (°C)'
+						            },
+						            plotLines: [{
+						                value: 0,
+						                width: 1,
+						                color: '#808080'
+						            }]
+						        },
+						        tooltip: {
+						            valueSuffix: '°C'
+						        },
+						        legend: {
+						            layout: 'vertical',
+						            align: 'right',
+						            verticalAlign: 'middle',
+						            borderWidth: 0
+						        },
+						        series: [{
+						            name: 'sunny',
+						            data: list
+						        }]
+						    });
 					}
 					else{
-						$('#chart-section').html('<h3 style="color:red;">Please try again.</h3>');
+						$('#chart-div').html('<h3 style="color:red;">Please try again.</h3>');
 					}
 				},
 				error:function(){
