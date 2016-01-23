@@ -14,7 +14,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 import dj_database_url
 DATABASES={}
-DATABASES['default'] =  dj_database_url.config(default='postgres://ubkebkjohciguv:Dg-S2Ha5UD8J2RJugnnQRUWLtC@ec2-54-83-202-218.compute-1.amazonaws.com:5432/de71c2pmk0vp6j') 
+DATABASES['default'] =  dj_database_url.config(default=' postgres://jouhmjpknvzutr:A9j1QBv03Vq-DO0Hzc1IICQRd8@ec2-50-19-233-111.compute-1.amazonaws.com:5432/dfv1f5utop79ki') 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
