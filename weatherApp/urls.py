@@ -17,7 +17,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^heroku/app/admin/', include(admin.site.urls)),
     url(r'^$','weatherPlot.views.landing_page_view',name='landing_page_view'),
     # url(r'^graph/$','weatherPlot.views.graph_plot_view',name='graph_plot_view'),
     url(r'^ajax/get-points/$','weatherPlot.views.get_points_view',name='get_points_view'),
