@@ -1,1 +1,30 @@
 {% extends "base.html" %}
+
+{% block stylesheets %}
+	{{block.super}}
+	<style>
+		#id_station_name
+		{
+			width: 15%;
+			margin: 0 auto;
+		}
+	</style>
+{% endblock stylesheets %}
+
+{% block body %}
+	<section id="add-station-area">
+		<div class="container">
+			<h3>Add more Stations below</h3>
+			<form class="add-station" method="post" action="{% url 'add_station_view' %}">
+				{% csrf_token %}
+				{{form.station_name.label_tag}}<br>
+				<select  class="form-control" id="id_station_name" name="station_name">
+					{% for station in all_stations %}
+						<option value="{{station}}">{{station}}</option>
+					{% endfor %}
+				</select>
+				<input class="button2 btn btn-default" type="submit">
+			</form>
+		</div>
+	</section>
+{% endblock body %}

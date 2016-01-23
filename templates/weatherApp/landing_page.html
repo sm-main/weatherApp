@@ -18,10 +18,7 @@
 			width: 15%!important;
 			margin: 0 auto;
 		}
-		#id_station_name
-		{
-			width: 90%!important;
-		}
+		
 		.tt-dataset, .tt-dataset-station
 		{
 			background-color: #fff,
@@ -57,7 +54,31 @@
 			<form id="filter-form" method="post" action="{% url 'get_points_view' %}">
 				{% csrf_token %}
 				<span class="station-error"></span>
-				{{form.as_p}}
+				<p>
+					{{form.station_name.label_tag}}<br>
+					<select class="form-control" id="id_station_name" name="station_name">
+					{% if all_user_station_name|length == 0 %}
+						<option value="">Please Add stations</option>
+					{% else %}
+						{% for station_name in all_user_station_name %}
+							<option value="{{station_name}}">{{station_name}}</option>
+						{% endfor %}
+					{% endif %}	
+					</select>
+				</p>
+				<p>
+					{{form.parameter.label_tag}}<br>
+					{{form.parameter}}<br>	
+				</p>
+				<p>
+					{{form.date_start.label_tag}}<br>
+					{{form.date_start}}
+				</p>
+				<p>
+					{{form.date_stop.label_tag}}<br>
+					{{form.date_stop}}<br>
+				</p>
+
 				<input class="button2 btn btn-default" type="submit" value="submit">
 			</form>
 		</div>	
@@ -71,40 +92,13 @@
 
 {% block scripts %}
 	{{block.super}}
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.1/js/bootstrap-datepicker.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/datepair.js/0.4.14/jquery.datepair.min.js"></script>
 	<script src="http://code.highcharts.com/highcharts.js"></script>
 	<script src="https://code.highcharts.com/modules/data.js"></script>
 	<script src="https://code.highcharts.com/modules/exporting.js"></script>
 	<script>
-		/*.....................Station Typeahead.............*/
-		var substringMatcher = function(strs) {
-	  		return function findMatches(q, cb) {
-	    		var matches, substringRegex;
-	    		matches = [];
-	    		substrRegex = new RegExp(q, 'i');
-	    		$.each(strs, function(i, str) {
-	      			if (substrRegex.test(str)) {
-	        			matches.push(str);
-	      			}
-	    		});
-
-	    		cb(matches);
-			};
-		};
 		
-		var station = {{all_user_station_name|safe}}
-
-		$('#id_station_name.typeahead').typeahead({
-		  hint: true,
-		  highlight: true,
-		  minLength: 1
-		},
-		{
-		  name: 'station',
-		  source: substringMatcher(station)
-		});
 		/*..................DatePicker..................................*/
 		$('.date').datepicker({
 			'format':'yyyy-mm-dd',
@@ -189,7 +183,6 @@
 					if (response.error === false){
 						//console.log(response.temperature_list);
 						//console.log(response.humidity_list);
-						$('.station-error').html('');
 						if (response.parameter === 'temperature'){
 							var list = [];
 							$.each(response.temperature_list,function(index,elem){
@@ -208,12 +201,13 @@
 					}
 					else{
 						$('#chart-div').html('<h3 style="color:red;">Please try again.</h3>');
-						if(response.error_type==='station_name'){
-							$('.station-error').html('Invalid station name');
-						}
+						
 					}
 				},
-				error:function(){
+				error:function(response){
+					if(response.form_invalid===true){
+						alert('form invalid');
+					}
 					alert('check your internet');
 				}
 			})

@@ -1,15 +1,13 @@
 from django import forms
-
+from .models import UserProfile,Station
 
 PARAMETER_CHOICES = (('Temperature','Temperature'),('Humidity','Humidity'))
 
 class FilterForm(forms.Form):
 	station_name = forms.CharField(
-							max_length=40,
 							widget=forms.TextInput(
 								attrs={
-									'class':'form-control typeahead',
-									'required':'true'
+									'class':'form-control'
 							}))
 
 	parameter = forms.ChoiceField(
@@ -29,3 +27,10 @@ class FilterForm(forms.Form):
 							widget=forms.TextInput(attrs={
 								'class':'date end form-control',	
 								}))
+
+class AddStation(forms.Form):
+	station_name = forms.CharField(
+							widget=forms.TextInput(
+								attrs={
+									'class':'form-control'
+								}))	

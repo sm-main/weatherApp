@@ -4,7 +4,7 @@ from datetime import datetime,timedelta,date
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect,Http404,JsonResponse
 from django.shortcuts import render
-from .forms import FilterForm
+from .forms import FilterForm,AddStation
 from .models import UserProfile,Station
 
 @login_required
@@ -38,15 +38,6 @@ def get_points_view(request):
 			parameter = form.cleaned_data['parameter']
 			date_start = form.cleaned_data['date_start']
 			date_stop = form.cleaned_data['date_stop']
-
-			all_user_stations = UserProfile.objects.get(user=request.user).station_set.all()
-			all_user_station_name = [x.station_name for x in all_user_stations]
-			if station_name in all_user_station_name:
-				print('x')
-			else:
-				response_data['error'] = True
-				response_data['error_type'] = 'station_name'
-				return JsonResponse(response_data)
 
 			date_start_obj = datetime.strptime(date_start,'%Y-%m-%d').date()
 			date_stop_obj = datetime.strptime(date_stop,'%Y-%m-%d').date()
@@ -87,7 +78,40 @@ def get_points_view(request):
 			except:
 				response_data['error'] = True
 				return JsonResponse(response_data)
+		else:
+			response_data['form_invalid'] = True 
+			return JsonResponse(response_data)		
 
 @login_required
 def add_station_view(request):
-	pass
+	"""
+		user can add stations which are not yet connected with his profile table
+	"""
+	if request.method == 'GET':
+		form = AddStation()
+		all_stations = Station.objects.all()
+		all_user_stations = UserProfile.objects.get(user=request.user).station_set.all()
+		all_user_station_name = [x.station_name for x in all_user_stations]
+		new_station_list = []
+		if len(all_user_station_name) > 0:	
+			for station in all_stations:
+				if station.station_name in all_user_station_name:
+					pass
+				else:
+					new_station_list.append(station.station_name)	
+		context = {
+			'form':form,
+			'all_stations':new_station_list
+		}
+		return render(request,'weatherApp/add_station_page.html',context)
+
+	if request.method == 'POST':
+		form = AddStation(request.POST)
+		if form.is_valid():
+			station_name = form.cleaned_data['station_name']
+			profile_obj = UserProfile.objects.get(user=request.user)
+			new_station_obj = Station.objects.get(station_name=station_name)
+			new_station_obj.user_profile.add(profile_obj)
+		return HttpResponseRedirect('/')
+
+
