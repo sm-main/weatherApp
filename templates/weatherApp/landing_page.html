@@ -56,9 +56,9 @@
 				<span class="station-error"></span>
 				<p>
 					{{form.station_name.label_tag}}<br>
-					<select class="form-control" id="id_station_name" name="station_name">
+					<select class="form-control" id="id_station_name" name="station_name" required>
 					{% if all_user_station_name|length == 0 %}
-						<option value="">Please Add stations</option>
+						<option value="" disabled selected>Add a station first</option>
 					{% else %}
 						{% for station_name in all_user_station_name %}
 							<option value="{{station_name}}">{{station_name}}</option>
