@@ -24,7 +24,7 @@
 			background-color: #fff,
 			margin-left:10px;
 		}
-		.station-error
+		.station-error,.error-range
 		{
 			color: red;
 			font-size: 11px;
@@ -59,6 +59,7 @@
 					<select class="form-control" id="id_station_name" name="station_name" required>
 					{% if all_user_station_name|length == 0 %}
 						<option value="" disabled selected>Add a station first</option>
+					
 					{% else %}
 						{% for station_name in all_user_station_name %}
 							<option value="{{station_name}}">{{station_name}}</option>
@@ -73,6 +74,7 @@
 				<p>
 					{{form.date_start.label_tag}}<br>
 					{{form.date_start}}
+					<span class="error-range"></span>
 				</p>
 				<p>
 					{{form.date_stop.label_tag}}<br>
@@ -172,6 +174,13 @@
 		/*.................Filter Form.................................*/
 		$('#filter-form').on('submit',function(e){
 			e.preventDefault();
+			var startDate = new Date($('#id_date_start').val());
+			var endDate = new Date($('#id_date_stop').val());
+			if (startDate > endDate){
+				//alert('please enter a valid date range');
+				$('.error-range').html('please enter a valid date range');
+				return 
+			}
 			var formData = $(this).serialize();
 			$.ajax({
 				url:$(this).attr('action'),
