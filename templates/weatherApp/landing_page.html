@@ -22,6 +22,16 @@
 		{
 			width: 90%!important;
 		}
+		.tt-dataset, .tt-dataset-station
+		{
+			background-color: #fff,
+			margin-left:10px;
+		}
+		.station-error
+		{
+			color: red;
+			font-size: 11px;
+		}
 	</style>
 {% endblock stylesheets %}
 
@@ -46,7 +56,7 @@
 		<div class="container">
 			<form id="filter-form" method="post" action="{% url 'get_points_view' %}">
 				{% csrf_token %}
-
+				<span class="station-error"></span>
 				{{form.as_p}}
 				<input class="button2 btn btn-default" type="submit" value="submit">
 			</form>
@@ -177,8 +187,9 @@
 				data:formData,
 				success:function(response){
 					if (response.error === false){
-						console.log(response.temperature_list);
-						console.log(response.humidity_list);
+						//console.log(response.temperature_list);
+						//console.log(response.humidity_list);
+						$('.station-error').html('');
 						if (response.parameter === 'temperature'){
 							var list = [];
 							$.each(response.temperature_list,function(index,elem){
@@ -197,6 +208,9 @@
 					}
 					else{
 						$('#chart-div').html('<h3 style="color:red;">Please try again.</h3>');
+						if(response.error_type==='station_name'){
+							$('.station-error').html('Invalid station name');
+						}
 					}
 				},
 				error:function(){

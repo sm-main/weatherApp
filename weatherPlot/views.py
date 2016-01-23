@@ -39,6 +39,15 @@ def get_points_view(request):
 			date_start = form.cleaned_data['date_start']
 			date_stop = form.cleaned_data['date_stop']
 
+			all_user_stations = UserProfile.objects.get(user=request.user).station_set.all()
+			all_user_station_name = [x.station_name for x in all_user_stations]
+			if station_name in all_user_station_name:
+				print('x')
+			else:
+				response_data['error'] = True
+				response_data['error_type'] = 'station_name'
+				return JsonResponse(response_data)
+
 			date_start_obj = datetime.strptime(date_start,'%Y-%m-%d').date()
 			date_stop_obj = datetime.strptime(date_stop,'%Y-%m-%d').date()
 
