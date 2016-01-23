@@ -72,7 +72,6 @@ def get_points_view(request):
 					response_data['humidity_list'] = humidity_list	
 					response_data['parameter'] = 'humidity'
 				response_data['error'] = False	
-				#print(date_list_obj,'list_obje')
 				response_data['date_list'] = date_list_obj			
 				return JsonResponse(response_data)	
 			except:
