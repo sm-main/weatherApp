@@ -17,3 +17,13 @@ class Station(models.Model):
 		return self.station_name
 
 
+class DataPoint(models.Model):
+	user_profile = models.ForeignKey(UserProfile)
+	date = models.DateField()
+	temperature_value = models.DecimalField(max_digits=5,decimal_places=3,blank=True,null=True)
+	temperature_tag = models.CharField(max_length=500,blank=True)
+	humidity_value = models.DecimalField(max_digits=5,decimal_places=3,blank=True,null=True)
+	humidity_tag = models.CharField(max_length=500,blank=True)
+
+	def __str__(self):
+		return str(self.date) + ' result of  ' + self.user_profile.user.username +' searching '
