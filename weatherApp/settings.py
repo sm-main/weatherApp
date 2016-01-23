@@ -17,6 +17,9 @@ DATABASES={}
 DATABASES['default'] =  dj_database_url.config(default=' postgres://jouhmjpknvzutr:A9j1QBv03Vq-DO0Hzc1IICQRd8@ec2-50-19-233-111.compute-1.amazonaws.com:5432/dfv1f5utop79ki') 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
