@@ -13,11 +13,14 @@ def landing_page_view(request):
 
 	"""
 	if request.method == 'GET':	
+		all_user_stations = UserProfile.objects.get(user=request.user).station_set.all()
+		all_user_station_name = [x.station_name for x in all_user_stations]
 		form = FilterForm()
 		#print(request.user.)
 		context = {
 			'form':form,
-			'username':request.user.username
+			'username':request.user.username,
+			'all_user_station_name':all_user_station_name
 		}
 		return render(request,'weatherApp/landing_page.html',context)
 		
@@ -29,7 +32,6 @@ def get_points_view(request):
 
 		"""
 		response_data = {}
-		all_user_stations = UserProfile.objects.get(user=request.user).stations
 		form = FilterForm(request.POST)
 		if form.is_valid():
 			station_name = form.cleaned_data['station_name']

@@ -84,8 +84,7 @@
 			};
 		};
 		
-		var states = ['Delhi','Haryana','Maharashtra','Gujrat'
-		];
+		var station = {{all_user_station_name|safe}}
 
 		$('#id_station_name.typeahead').typeahead({
 		  hint: true,
@@ -93,8 +92,8 @@
 		  minLength: 1
 		},
 		{
-		  name: 'states',
-		  source: substringMatcher(states)
+		  name: 'station',
+		  source: substringMatcher(station)
 		});
 		/*..................DatePicker..................................*/
 		$('.date').datepicker({
