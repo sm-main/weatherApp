@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-
+import dj_database_url
+DATABASES={}
+DATABASES['default'] =  dj_database_url.config(default='postgres://ubkebkjohciguv:Dg-S2Ha5UD8J2RJugnnQRUWLtC@ec2-54-83-202-218.compute-1.amazonaws.com:5432/de71c2pmk0vp6j') 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -77,16 +79,16 @@ WSGI_APPLICATION = 'weatherApp.wsgi.application'
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'launch_final2',
-        'USER': 'sumantmann',
-        'PASSWORD': 'mann.com',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'launch_final2',
+#         'USER': 'sumantmann',
+#         'PASSWORD': 'mann.com',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
