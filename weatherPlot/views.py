@@ -98,7 +98,9 @@ def add_station_view(request):
 				if station.station_name in all_user_station_name:
 					pass
 				else:
-					new_station_list.append(station.station_name)	
+					new_station_list.append(station.station_name)
+		else:
+			new_station_list = [x.station_name for x in all_stations]				
 		context = {
 			'form':form,
 			'all_stations':new_station_list
