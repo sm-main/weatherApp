@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponseRedirect, Http404
 from django.contrib.auth import logout, login, authenticate
 from django.core.urlresolvers import reverse
 from .forms import LoginForm,RegistrationForm
+from weatherPlot.models import UserProfile
 
 
 
@@ -47,6 +48,9 @@ def registration_view(request):
 	if form.is_valid():
 		new_user = form.save(commit=False)
 		new_user.save()
+		new_user_profile = 	UserProfile()
+		new_user_profile.user = new_user
+		new_user_profile.save()
 		return HttpResponseRedirect("/")
 
 	context = {

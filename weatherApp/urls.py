@@ -22,6 +22,7 @@ urlpatterns = [
     # url(r'^graph/$','weatherPlot.views.graph_plot_view',name='graph_plot_view'),
     url(r'^ajax/get-points/$','weatherPlot.views.get_points_view',name='get_points_view'),
     url(r'^accounts/login/$', 'accounts.views.login_view', name='auth_login'),
+    url(r'^add/station/$','weatherPlot.views.add_station_view',name='add_station_view'),
     url(r'^accounts/logout/$', 'accounts.views.logout_view', name='auth_logout'),
     url(r'^accounts/register/$', 'accounts.views.registration_view', name='auth_register')
 ]

@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect,Http404,JsonResponse
 from django.shortcuts import render
 from .forms import FilterForm
+from .models import UserProfile,Station
 
 @login_required
 def landing_page_view(request):
@@ -28,7 +29,7 @@ def get_points_view(request):
 
 		"""
 		response_data = {}
-		print('xx')
+		all_user_stations = UserProfile.objects.get(user=request.user).stations
 		form = FilterForm(request.POST)
 		if form.is_valid():
 			station_name = form.cleaned_data['station_name']
@@ -75,3 +76,7 @@ def get_points_view(request):
 			except:
 				response_data['error'] = True
 				return JsonResponse(response_data)
+
+@login_required
+def add_station_view(request):
+	pass
