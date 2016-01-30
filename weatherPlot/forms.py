@@ -34,3 +34,7 @@ class AddStation(forms.Form):
 								attrs={
 									'class':'form-control'
 								}))	
+
+class AddTag(forms.Form):
+	tag_value = forms.CharField(
+							widget=forms.TextInput())	

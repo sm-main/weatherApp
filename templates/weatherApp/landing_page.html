@@ -90,6 +90,15 @@
 		<div id="chart-div" style="min-width: 310px; height: 400px; margin: 0 auto"></div>	
 	</section>
 
+	<section id="tag-section">
+		<div class="container">
+			<h2>You can add tags here</h2>
+			<ul id="add-tags">
+			
+			</ul>
+		</div>
+	</section>
+
 {% endblock body %}
 
 {% block scripts %}
@@ -212,12 +221,27 @@
 						$('#chart-div').html('<h3 style="color:red;">Please try again.</h3>');
 						
 					}
+					$('#add-tags').html(response.li_template_data);
+					$('.tag-form').on('submit',function(e){
+						e.preventDefault();
+						var formData = $(this).serialize() + '&id=' + $(this).attr('id')+'&parameter='+response.parameter;
+						$.ajax({
+							url:'/add/tag/',
+							type:'POST',
+							csrfmiddlewaretoken: csrftoken,
+							dataType:'json',
+							data:formData,
+							success:function(data){
+								alert(data.status);
+							}
+						})
+					});
 				},
 				error:function(response){
 					if(response.form_invalid===true){
 						alert('form invalid');
 					}
-					alert('check your internet');
+					alert('city not found try again');
 				}
 			})
 		});

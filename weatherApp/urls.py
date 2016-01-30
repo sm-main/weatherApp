@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^heroku/app/admin/', include(admin.site.urls)),
     url(r'^$','weatherPlot.views.landing_page_view',name='landing_page_view'),
     # url(r'^graph/$','weatherPlot.views.graph_plot_view',name='graph_plot_view'),
+    url(r'^add/tag/$','weatherPlot.views.add_tag_view',name='add_tag_view'),
     url(r'^ajax/get-points/$','weatherPlot.views.get_points_view',name='get_points_view'),
     url(r'^accounts/login/$', 'accounts.views.login_view', name='auth_login'),
     url(r'^add/station/$','weatherPlot.views.add_station_view',name='add_station_view'),

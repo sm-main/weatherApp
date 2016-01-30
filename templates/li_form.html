@@ -1,0 +1,19 @@
+{% for list in updated_list_obj %}
+	<li class="li-{{forloop.counter}}">
+		{% if parameter == "Temperature" %}
+		<span>{{list.temperature_value}} temperature point value</span>
+		<form class="form-{{forloop.counter}} tag-form" id="{{list.id}}" method="post">
+			
+			<input id="id_tag_value" name="tag_value" value="{{list.temperature_tag}}" type="text">
+			<input type="submit" value="AddTag">
+		</form>
+		{% else %}
+		<span>{{list.humidity_value}} humidity point value</span>
+		<form class="form-{{forloop.counter}} tag-form" id="{{list.id}}" method="post">
+			
+			<input id="id_tag_value" name="tag_value" value="{{list.humidity_tag}}" type="text">
+			<input type="submit" value="AddTag">
+		</form>
+		{% endif %}
+	</li>
+{% endfor %}

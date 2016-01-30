@@ -12,12 +12,12 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-import dj_database_url
-DATABASES={}
-DATABASES['default'] =  dj_database_url.config(default=' postgres://jouhmjpknvzutr:A9j1QBv03Vq-DO0Hzc1IICQRd8@ec2-50-19-233-111.compute-1.amazonaws.com:5432/dfv1f5utop79ki') 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# import dj_database_url
+# DATABASES={}
+# DATABASES['default'] =  dj_database_url.config(default=' postgres://jouhmjpknvzutr:A9j1QBv03Vq-DO0Hzc1IICQRd8@ec2-50-19-233-111.compute-1.amazonaws.com:5432/dfv1f5utop79ki') 
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -82,16 +82,12 @@ WSGI_APPLICATION = 'weatherApp.wsgi.application'
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'launch_final2',
-#         'USER': 'sumantmann',
-#         'PASSWORD': 'mann.com',
-#         'HOST': 'localhost',
-#         'PORT': '',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
