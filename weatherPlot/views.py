@@ -12,7 +12,7 @@ from .models import UserProfile,Station,DataPoint
 @login_required
 def landing_page_view(request):
 	"""
-
+	landing page view	
 	"""
 	if request.method == 'GET':	
 		all_user_stations = UserProfile.objects.get(user=request.user).station_set.all()
@@ -33,7 +33,8 @@ def landing_page_view(request):
 def get_points_view(request):
 	if request.method == 'POST' and request.is_ajax():
 		"""
-
+		This ajax request posts date range,parameter and returns temerature or humidity values of 
+		pirticular dates.
 		"""
 		response_data = {}
 		form = FilterForm(request.POST)
