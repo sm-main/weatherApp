@@ -1,4 +1,6 @@
 # weatherApp
 
 Hosted on Heroku  http://polar-tundra-43811.herokuapp.com/.
-if above link didn't work it must have expired !!
+
+-Used inline styling (intentionally)
+-Used weatherground api for fetching Temperature,Humidity values
